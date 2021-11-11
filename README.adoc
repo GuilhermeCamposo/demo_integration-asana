@@ -1,1 +1,14 @@
 = Asana Adapter
+
+
+== How to build with OpenShift
+----
+oc new-build java:openjdk-11-el7~https://gitlab.com/rhi-demo/asana-adapter.git
+oc patch bc/asana-adapter -p '{"spec":{ "strategy":{ "sourceStrategy":{ "incremental": true } } }}'
+----
+
+== Required environment variables
+
+ASANA_PAT
+ASANA_WORKSPACE_GID
+ASANA_PROJECT_GID
