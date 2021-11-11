@@ -14,6 +14,7 @@ public class APIRoute extends RouteBuilder {
         .consumes("application/json")
         .post()
             .route()
+            .log("received payload -> ${body}")
             .to("bean:asanaBean");
 
 
