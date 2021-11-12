@@ -9,6 +9,6 @@ oc patch bc/asana-adapter -p '{"spec":{ "strategy":{ "sourceStrategy":{ "increme
 
 == Required environment variables
 
-ASANA_PAT
-ASANA_WORKSPACE_GID
-ASANA_PROJECT_GID
+- ASANA_PAT
+- ASANA_WORKSPACE_GID
+- ASANA_PROJECT_GID
