@@ -16,3 +16,12 @@ oc patch bc/asana-adapter -p '{"spec":{ "strategy":{ "sourceStrategy":{ "increme
 | ASANA_WORKSPACE_GID | | Workspace used in the Demo
 | ASANA_PROJECT_GID | | Project used in the Demo
 | AB_JOLOKIA_OFF | true | Jolokia doesn't work with Quarkus
+|=======================
+
+== Deploy using ArgoCD
+
+You will need  a secret to provide the Asana credentials to the application. Create a secret called *asana-secret* like this:
+
+----
+oc create secret generic asana-secret --from-literal=ASANA_PAT= --from-literal=ASANA_WORKSPACE_GID= --from-literal=ASANA_PROJECT_GID=
+----

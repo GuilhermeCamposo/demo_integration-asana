@@ -1,0 +1,55 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: asana-adapter
+  labels:
+    app: asana-adapter
+    app.kubernetes.io/component: asana-adapter
+    app.kubernetes.io/instance: asana-adapter
+    app.kubernetes.io/name: asana-adapter
+    app.kubernetes.io/part-of: asana-adapter
+    app.openshift.io/runtime: camel
+    app.openshift.io/runtime-version: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asana-adapter
+  template:
+    metadata:
+      labels:
+        app: asana-adapter
+        deploymentconfig: asana-adapter
+    spec:
+      containers:
+        - resources: {}
+          terminationMessagePath: /dev/termination-log
+          name: asana-adapter
+          env:
+            - name: AB_JOLOKIA_OFF
+              value: 'true'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+            - containerPort: 8778
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+          terminationMessagePolicy: File
+          envFrom:
+            - secretRef:
+                name: asana-secret
+          image: quay.io/gcamposo/asana-adapter:1.0.0
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
