@@ -54,21 +54,14 @@
     <dependency>
       <groupId>com.asana</groupId>
       <artifactId>asana</artifactId>
-      <version>0.10.1</version>
+      <version>0.10.4</version>
     </dependency>
+
+
   </dependencies>
 
   <repositories>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>redhat</id>
-      <url>https://maven.repository.redhat.com/ga</url>
-    </repository>
+
     <repository>
       <releases>
         <enabled>true</enabled>
@@ -79,6 +72,18 @@
       <id>central-repository</id>
       <url>https://repo1.maven.org/maven2/</url>
     </repository>
+
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>redhat</id>
+      <url>https://maven.repository.redhat.com/ga</url>
+    </repository>
+
   </repositories>
 
   <pluginRepositories>
