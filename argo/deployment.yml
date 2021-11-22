@@ -17,9 +17,12 @@ spec:
       app: asana-adapter
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
       labels:
         app: asana-adapter
         deploymentconfig: asana-adapter
+        version: v1
     spec:
       containers:
         - resources: {}
@@ -40,7 +43,7 @@ spec:
           envFrom:
             - secretRef:
                 name: asana-secret
-          image: quay.io/gcamposo/asana-adapter:1.0.3
+          image: quay.io/gcamposo/asana-adapter:1.0.4
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
