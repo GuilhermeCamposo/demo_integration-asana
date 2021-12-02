@@ -25,7 +25,13 @@ spec:
         version: v1
     spec:
       containers:
-        - resources: {}
+        - resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "500Mi"
+              cpu: "200m"
           terminationMessagePath: /dev/termination-log
           name: asana-adapter
           env:
@@ -43,7 +49,19 @@ spec:
           envFrom:
             - secretRef:
                 name: asana-secret
-          image: quay.io/gcamposo/asana-adapter:1.0.4
+          image: quay.io/gcamposo/asana-adapter:1.0.5
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 20
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
