@@ -2,6 +2,9 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: asana-adapter
+  annotations:
+    app.openshift.io/vcs-ref: ''
+    app.openshift.io/vcs-uri: 'https://gitlab.com/rhi-demo/asana-adapter.git'
   labels:
     app: asana-adapter
     app.kubernetes.io/component: asana-adapter
