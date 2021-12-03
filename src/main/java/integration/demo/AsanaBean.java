@@ -29,6 +29,15 @@ public class AsanaBean  {
     @ConfigProperty(name = "asana.project.gid")
      String projectGid;
 
+    @ConfigProperty(name = "asana.field.customer")
+    String cfCustomerName;
+
+    @ConfigProperty(name = "asana.field.booking")
+    String cfBooking;
+
+    @ConfigProperty(name = "asana.field.opportunity")
+    String cfOpportunity;
+
     private Client client;
 
     private static final Logger LOG = Logger.getLogger(AsanaBean.class);
@@ -44,19 +53,20 @@ public class AsanaBean  {
 
        if(opp != null && opp.get("old") != null && ((List) opp.get("old")).size() > 0 ){
 
-           updateTask(exchange,createNotes(oppNew,account,lineItems),oppNew);
+           updateTask(exchange,createNotes(oppNew,account,lineItems),oppNew,addCustomFieldValues(oppNew,account));
 
        }else{
-           createTask(exchange,createNotes(oppNew,account,lineItems),oppNew);
+           createTask(exchange,createNotes(oppNew,account,lineItems),oppNew,addCustomFieldValues(oppNew,account));
        }
 
     }
 
-    private void updateTask(Exchange exchange,  String notes, Map opp)  throws Exception {
+    private void updateTask(Exchange exchange,  String notes, Map opp,  Map<String, Object> customFields)  throws Exception {
 
         Task demoTask = client.tasks.updateTask("external:" + opp.get("Id").toString())
                 .data("name", opp.get("Name") )
                 .data("html_notes", notes)
+                .data("custom_fields", customFields)
                 .execute();
 
         LOG.info("Task Updated: " + demoTask.gid );
@@ -65,7 +75,7 @@ public class AsanaBean  {
         exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
     }
 
-    private void createTask(Exchange exchange, String notes, Map<String,Object> opp) throws Exception{
+    private void createTask(Exchange exchange, String notes, Map<String,Object> opp, Map<String, Object> customFields ) throws Exception{
 
         Map<String, Object> external = new HashMap<>();
         external.put("gid",opp.get("Id"));
@@ -76,6 +86,7 @@ public class AsanaBean  {
                 .data("projects", Arrays.asList(projectGid))
                 .data("html_notes", notes)
                 .data("external", external)
+                .data("custom_fields", customFields)
                 .execute();
 
         LOG.info("Task created: " + demoTask.gid );
@@ -88,9 +99,7 @@ public class AsanaBean  {
         StringBuilder builder = new StringBuilder();
 
         builder.append("<body>\n");
-        builder.append("<strong>Account Name: </strong>").append(account.get("Name")).append("\n");
         builder.append("<strong>Account Number: </strong>").append(account.get("AccountNumber")).append("\n");
-        builder.append("<strong>Deal Size: </strong>").append(opp.get("Amount")).append("\n");
         builder.append("<strong>Products Involved: </strong>").append("\n");
 
         if(lineItems != null && lineItems.size() > 0){
@@ -108,5 +117,23 @@ public class AsanaBean  {
         builder.append("</body>");
 
         return  builder.toString();
+    }
+
+    private Map addCustomFieldValues(Map opp, Map account){
+
+        Map<String, Object> customFields = new HashMap<>();
+
+        if(account != null){
+            customFields.put(cfCustomerName, account.get("Name"));
+        }
+
+        if (opp != null){
+            customFields.put(cfBooking, opp.get("Amount"));
+            customFields.put(cfOpportunity, opp.get("Id"));
+        }
+
+
+
+        return customFields;
     }
 }
