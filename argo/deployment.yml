@@ -22,6 +22,9 @@ spec:
     metadata:
       annotations:
         sidecar.istio.io/inject: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/q/metrics"
       labels:
         app: asana-adapter
         deploymentconfig: asana-adapter
