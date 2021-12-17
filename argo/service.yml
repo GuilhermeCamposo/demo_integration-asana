@@ -10,5 +10,9 @@ spec:
     protocol: TCP
     targetPort: 8080
     name: http
+  - port: 15020
+    protocol: TCP
+    name: monitoring
+    targetPort: 15020    
   selector:
     app: asana-adapter
