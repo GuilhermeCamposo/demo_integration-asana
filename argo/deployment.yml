@@ -7,6 +7,7 @@ metadata:
     app.openshift.io/vcs-uri: 'https://gitlab.com/rhi-demo/asana-adapter.git'
   labels:
     app: asana-adapter
+    demo: rhi-demo
     app.kubernetes.io/component: asana-adapter
     app.kubernetes.io/instance: asana-adapter
     app.kubernetes.io/name: asana-adapter
@@ -27,6 +28,7 @@ spec:
         prometheus.io/path: "/q/metrics"
       labels:
         app: asana-adapter
+        demo: rhi-demo
         deploymentconfig: asana-adapter
         version: v1
     spec:

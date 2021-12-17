@@ -3,6 +3,7 @@ kind: Service
 metadata:
   labels:
     app: asana-adapter
+    demo: rhi-demo
   name: asana-adapter
 spec:
   ports:
@@ -13,6 +14,6 @@ spec:
   - port: 15020
     protocol: TCP
     name: monitoring
-    targetPort: 15020    
+    targetPort: 15020
   selector:
     app: asana-adapter
