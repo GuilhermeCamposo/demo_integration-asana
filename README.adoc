@@ -11,11 +11,14 @@ oc patch bc/asana-adapter -p '{"spec":{ "strategy":{ "sourceStrategy":{ "increme
 
 [options="header"]
 |=======================
-| Parameter | Example Value                                      | Definition
-| ASANA_PAT | | Personal Asana Token
-| ASANA_WORKSPACE_GID | | Workspace used in the Demo
-| ASANA_PROJECT_GID | | Project used in the Demo
+| Parameter | Example Value  | Definition
 | AB_JOLOKIA_OFF | true | Jolokia doesn't work with Quarkus
+| ASANA_PAT | 1/9999999990000:zerrt346790oka | Personal Asana Token
+| ASANA_WORKSPACE_GID | 079000902 | Workspace used in the Demo
+| ASANA_PROJECT_GID | 079000902 | Project used in the Demo
+| ASANA_FIELD_OPPORTUNITY | 079000902 | Custom field to display Opportunity ID
+| ASANA_FIELD_CUSTOMER | 079000902 | Custom field to display customer name
+| ASANA_FIELD_BOOKING | 079000902 | custom field to display opportunity amount
 |=======================
 
 == Deploy using ArgoCD
@@ -24,4 +27,36 @@ You will need  a secret to provide the Asana credentials to the application. Cre
 
 ----
 oc create secret generic asana-secret --from-literal=ASANA_PAT= --from-literal=ASANA_WORKSPACE_GID= --from-literal=ASANA_PROJECT_GID=
+----
+
+== Recovering Asana's required GIDs
+
+=== Workspace
+
+----
+export ASANA_PAT=
+curl --location --request GET 'https://app.asana.com/api/1.0/workspaces?opt_pretty=true' --header 'Authorization: Bearer $ASANA_PAT'
+----
+
+=== Asana project
+
+You may use Asana's interface to create a project but its GID is not displayed there.
+You will need to perform an API query to retrieve those, like the following:
+
+----
+export ASANA_PAT=
+export ASANA_WORKSPACE=
+curl --location --request GET 'https://app.asana.com/api/1.0/workspaces/$ASANA_WORKSPACE/projects' --header 'Authorization: Bearer $ASANA_PAT'
+----
+
+=== Custom Fields GIDs
+
+You may use Asana's interface to create the custom fields but their GIDs are not displayed there.
+You will need to perform an API query to retrieve those, like the following:
+
+----
+export ASANA_PAT=
+export ASANA_PROJECT=
+curl --location --request GET 'https://app.asana.com/api/1.0/projects/$ASANA_PROJECT/custom_field_settings?opt_pretty=true&opt_fields=gid,custom_field' \
+--header 'Authorization: Bearer $ASANA_PAT'
 ----
