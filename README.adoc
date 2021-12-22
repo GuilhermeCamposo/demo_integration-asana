@@ -35,7 +35,7 @@ oc create secret generic asana-secret --from-literal=ASANA_PAT= --from-literal=A
 
 ----
 export ASANA_PAT=
-curl --location --request GET 'https://app.asana.com/api/1.0/workspaces?opt_pretty=true' --header 'Authorization: Bearer $ASANA_PAT'
+curl --location --request GET "https://app.asana.com/api/1.0/workspaces?opt_pretty=true' --header 'Authorization: Bearer $ASANA_PAT"
 ----
 
 === Asana project
@@ -46,7 +46,7 @@ You will need to perform an API query to retrieve those, like the following:
 ----
 export ASANA_PAT=
 export ASANA_WORKSPACE=
-curl --location --request GET 'https://app.asana.com/api/1.0/workspaces/$ASANA_WORKSPACE/projects' --header 'Authorization: Bearer $ASANA_PAT'
+curl --location --request GET "https://app.asana.com/api/1.0/workspaces/$ASANA_WORKSPACE/projects" --header "Authorization: Bearer $ASANA_PAT"
 ----
 
 === Custom Fields GIDs
@@ -57,6 +57,6 @@ You will need to perform an API query to retrieve those, like the following:
 ----
 export ASANA_PAT=
 export ASANA_PROJECT=
-curl --location --request GET 'https://app.asana.com/api/1.0/projects/$ASANA_PROJECT/custom_field_settings?opt_pretty=true&opt_fields=gid,custom_field' \
---header 'Authorization: Bearer $ASANA_PAT'
+curl --location --request GET "https://app.asana.com/api/1.0/projects/$ASANA_PROJECT/custom_field_settings?opt_pretty=true&opt_fields=gid,custom_field" \
+--header "Authorization: Bearer $ASANA_PAT"
 ----
