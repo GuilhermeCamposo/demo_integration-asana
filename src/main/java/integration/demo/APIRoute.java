@@ -18,13 +18,19 @@ public class APIRoute extends RouteBuilder {
         .log(LoggingLevel.ERROR,"${exception.message}")
         .setBody(simple("${exception.message} "));
 
-        rest("/asanaAdapter")
-        .consumes("application/json")
-        .post()
+        rest("/")
+
+        .get("/tracing")
+            .route()
+                .log("trace received")
+                .setBody(constant("test worked"))
+                .log("message sent")
+            .endRest()
+        .post("/asanaAdapter")
+            .consumes("application/json")
             .route()
             .log("received payload -> ${body}")
             .to("bean:asanaBean");
-
 
     }
 
