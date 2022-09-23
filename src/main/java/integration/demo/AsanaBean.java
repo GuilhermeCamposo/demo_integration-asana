@@ -53,8 +53,19 @@ public class AsanaBean  {
 
        if(opp != null && opp.get("old") != null && ((List) opp.get("old")).size() > 0 ){
 
-           updateTask(exchange,createNotes(oppNew,account,lineItems),oppNew,addCustomFieldValues(oppNew,account));
+           Task demoTask = null ;
 
+           try{
+               demoTask = client.tasks.findById("external:" + oppNew.get("Id").toString()).execute();
+           }catch (Exception e){
+               LOG.warn(e.getMessage());
+           }
+
+           if(demoTask != null){
+               updateTask(exchange,createNotes(oppNew,account,lineItems),oppNew,addCustomFieldValues(oppNew,account));
+           }else{
+               createTask(exchange,createNotes(oppNew,account,lineItems),oppNew,addCustomFieldValues(oppNew,account));
+           }
        }else{
            createTask(exchange,createNotes(oppNew,account,lineItems),oppNew,addCustomFieldValues(oppNew,account));
        }
@@ -131,8 +142,6 @@ public class AsanaBean  {
             customFields.put(cfBooking, opp.get("Amount"));
             customFields.put(cfOpportunity, opp.get("Id"));
         }
-
-
 
         return customFields;
     }
