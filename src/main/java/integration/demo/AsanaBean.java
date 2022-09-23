@@ -47,7 +47,7 @@ public class AsanaBean  {
          client = Client.accessToken(asanaToken);
     }
 
-    public void parseToAsana(@JsonPath("$.opportunity") Map opp, @JsonPath("$.account") Map account, @JsonPath("$.lineItems") List lineItems , Exchange exchange) throws Exception {
+    public void parseToAsana(@JsonPath("$.opportunity") Map opp, @JsonPath("$.account") Map account, @JsonPath(value = "$.lineItems", suppressExceptions = true) List lineItems , Exchange exchange) throws Exception {
 
        Map oppNew =  (Map) ((List) opp.get("new")).get(0);
 
