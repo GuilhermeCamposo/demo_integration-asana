@@ -22,6 +22,7 @@ public class APIRoute extends RouteBuilder {
 
         .get("/tracing")
             .route()
+                .routeId("tracing")
                 .log("trace received")
                 .setBody(constant("test worked"))
                 .log("message sent")
@@ -29,6 +30,7 @@ public class APIRoute extends RouteBuilder {
         .post("/asanaAdapter")
             .consumes("application/json")
             .route()
+            .routeId("publish-task")
             .log("received payload -> ${body}")
             .to("bean:asanaBean");
 
